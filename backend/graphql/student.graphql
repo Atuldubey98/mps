@@ -1,0 +1,94 @@
+enum Class {
+  NURS
+  PREP
+  I
+  II
+  III
+  IV
+  V
+  VI
+  VII
+  VIII
+  IX
+  X
+  XI
+  XII
+}
+type Student {
+  """
+  Unique identifier for the student
+  """
+  _id: ID
+  """
+  First name of the student
+  """
+  firstName: String
+  """
+  Last name of the student
+  """
+  lastName: String
+  """
+  Class or grade of the student
+  """
+  class: Class
+  """
+  Roll number of the student
+  """
+  rollNumber: Int
+}
+
+type Query {
+  """
+  Query to retrieve a specific student by ID
+  """
+  student(_id: ID!): Student
+  """
+  Query to retrieve all students
+  """
+  students: [Student!]!
+}
+
+input CreateStudentInput {
+  """
+  First name of the student (required)
+  """
+  firstName: String!
+  """
+  Last name of the student (required)
+  """
+  lastName: String!
+  """
+  Class or grade of the student (required)
+  """
+  class: Class!
+}
+
+input UpdateStudentInput {
+  """
+  Updated first name of the student
+  """
+  firstName: String
+  """
+  Updated last name of the student
+  """
+  lastName: String
+  """
+  Updated class or grade of the student
+  """
+  class: Class
+}
+
+type Mutation {
+  """
+  Mutation to create a new student
+  """
+  createStudent(student: CreateStudentInput): Student
+  """
+  Mutation to delete a student by ID
+  """
+  deleteStudent(_id: ID!): Boolean
+  """
+  Mutation to update a student by ID
+  """
+  updateStudent(_id: ID!, student: UpdateStudentInput): Student
+}
