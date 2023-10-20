@@ -10,7 +10,7 @@ const userResolver = {
     async login(_, { email, password }, { dataSources: { users } }) {
       const user = await users.login(email, password);
       if (!user) {
-        throw new GraphQLError("user is not authenticated", {
+        throw new GraphQLError("Creadentials are incorrect !", {
           extensions: {
             code: "UNAUTHENTICATED",
           },
