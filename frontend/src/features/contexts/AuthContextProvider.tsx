@@ -11,12 +11,19 @@ export default function AuthContextProvider({
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const client = useApolloClient();
-
+  const onSetAuthUser = (user: User | null) => {
+    setUser(user);
+  };
   useEffect(() => {
     (async () => {
-      const { data } = await client.query({ query: CURRENT_USER });
-      setUser(data.currentUser);
-      setLoading(false);
+      try {
+        const { data } = await client.query({ query: CURRENT_USER });
+        setUser(data.currentUser);
+      } catch (error) {
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
     })();
   }, []);
   return (
@@ -24,6 +31,7 @@ export default function AuthContextProvider({
       value={{
         currentUserLoading: loading,
         currentUser: user,
+        onSetAuthUser,
       }}
     >
       {children}

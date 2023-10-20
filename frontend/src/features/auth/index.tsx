@@ -3,11 +3,12 @@ import Container from "../common/Container";
 import { useMutation } from "@apollo/client";
 import { LOGIN_USER, REGISTER_USER } from "../../graphql/auth";
 import { useNavigate } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
 
 export default function AuthenticationPage() {
   const [typeOfAuth, setTypeOfAuth] = useState<"login" | "signup">("login");
   const isSignUp = typeOfAuth === "signup";
-
+  const auth = useAuth();
   const defaultUser = { email: "", password: "", name: "" };
   const [user, setUser] = useState(defaultUser);
   const [
@@ -21,7 +22,8 @@ export default function AuthenticationPage() {
   ] = useMutation(LOGIN_USER, {
     onCompleted(data) {
       localStorage.setItem("token", data.login.token);
-      navigate("/students", { replace: true });
+      auth?.onSetAuthUser(data.login.user);
+      navigate("/students");
     },
   });
   const onToggleAuth = () => {
